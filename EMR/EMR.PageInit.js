@@ -122,7 +122,21 @@
         }
         return controls;
     };
-
+    //window.EMR.getControlsValue = function () {
+    //    var tempDom = document.createElement('div');
+    //    tempDom.innerHTML = window.EMR.editor.getContent();
+    //    var models = tempDom.getElementsByTagName('span');
+    //    var controls = [];
+    //    for (var i = 0, l = models.length; i < l; i++) {
+    //        var jsonStr = models[i].getAttribute('tl-model');
+    //        if (jsonStr != null && jsonStr != '') {
+    //            var json = JSON.parse(jsonStr);
+    //            controls.push({ ID: json.ID, NAME: json.NAME, TYPE: json.TYPE, TAG: json.TAG, DESCNAME: json.DESCNAME, HTML: models[i].outerHTML });
+    //        }
+    //    }
+    //    debugger;
+    //    return controls;
+    //};
 
 
 

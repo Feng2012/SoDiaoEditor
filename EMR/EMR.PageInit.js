@@ -15,7 +15,7 @@
         var html = [' <div style="width:800px;margin:0px auto 0 auto;">',
         '<div id="panelEditor" style="margin-top:88px;">', editorHtml,
         '</div>',
-        '<div style="text-align: center;font-size: 12px; color: #999; margin: 20px 0;">SoDiao电子病历编辑器</div>',
+        '<div style="text-align: center;font-size: 12px; color: #999; margin: 20px 0;">SoDiao v2.0 电子病历编辑器</div>',
         '</div>'];
         return html.join('');
     }

@@ -120,7 +120,7 @@
                     isClear = 0;
                 var html = '<span class="tl-left" style="color:' +
                    ( (json.READONLY == 1) ? '#808080' : '#0000FF') +
-                    '" contenteditable="false">[</span><span  title="' + json.DESCNAME + '"  style="color:#' + json.COLOR + ';"  class="tl-value" onclick="EMR.text.tlspanclick(this);"  ' +
+                    '" contenteditable="false">[</span><span  title="' + json.DESCNAME + '"  style="color:#' + json.COLOR + ';"  class="tl-value" onclick="EMR.text.tlspanclick(this,event);"  ' +
                     ((json.READONLY == 1) ? ' contenteditable="false" ' : ' contenteditable="true" ') +
                     '>' + show + '</span><span style="color:' +
                     ((json.READONLY == 1) ? '#808080' : '#0000FF' )+

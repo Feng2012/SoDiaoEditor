@@ -184,10 +184,57 @@
             this.parentNode.setAttribute('tl-model', JSON.stringify(json));
         }
     }
+    function removeFloatWindow() {
+        document.body.onclick = function () {
+            var sNodes = document.getElementsByClassName('tl-ui-select');
+            if (sNodes != null && sNodes.length > 0) {
+                for (var i = 0, l = sNodes.length; i < l; i++) {
+                    sNodes[0].remove();
+                }
+                document.body.onclick = null;
+            }
+            if (window.frameElement != null) {
+                sNodes = window.parent.window.document.getElementsByClassName('tl-ui-select');
+                if (sNodes != null && sNodes.length > 0) {
+                    for (var i = 0, l = sNodes.length; i < l; i++) {
+                        sNodes[0].remove();
+                    }
+                    //window.parent.window.document.body.onclick = null;
+                }
+            }
+        };
+    }
+    function showHistory(t, historyData) {
+        historyData = [{}, {}]
+        
+        console.log('showHistory');
+        if (historyData == undefined || historyData.length <= 0) return;
+        //var width = t.offsetWidth, height = t.offsetHeight, left = getLeft(t), top = getTop(t) + height;
+        var newNode = document.createElement('div');
+        newNode.setAttribute('class', "tl-ui-select");
+        newNode.style.right = 5 + 'px';
+        newNode.style.top = 432 + 'px';
+        newNode.style.overflow = 'hidden';
+        newNode.style.maxHeight = 100 + 'px';
+        newNode.style.minWidth = 50 + 'px';
+        newNode.style.height = 120 + 'px';
+        newNode.style.width = 80 + 'px';
+        newNode.style.display = 'block';
+        newNode.innerHTML = "<div style='text-align:center;border-bottom:1px solid #ccc;'>历史痕迹</div><div style='padding: 5px;font-size: 12px;'>你瞅啥？...</div>";
+
+        if (window.frameElement == null) {//没有在frame 中
+            t.insertBefore(newNode, t.childNodes[t.childNodes.length - 1]);
+        } else {
+            var p = window.parent.window.document.body;
+            p.insertBefore(newNode, p.childNodes[p.childNodes.length - 1]);
+        }
+        setTimeout(removeFloatWindow(),100);
+    }
+
     var text = {
         tlclick: function (t) {
 
-        }, tlspanclick: function (t) {
+        }, tlspanclick: function (t,event) {
             //console.log('tlspanclick');
             //点击span，如果里面是默认值则需要去掉
             var value = t.innerHTML;
@@ -202,8 +249,18 @@
             //绑定内容变化后的事件
             t.removeEventListener("DOMCharacterDataModified", datamodified, false);
             t.addEventListener("DOMCharacterDataModified", datamodified, false);
+            if (json.READONLY == 0) {
+                //阻止事件传递
+                showHistory(t);
+                event = event || window.event;
+                if (event.stopPropagation) { //W3C阻止冒泡方法  
+                    event.stopPropagation();
+                } else {
+                    event.cancelBubble = true; //IE阻止冒泡方法  
+                }
+            }
         }, tlspanblur: function (t) {
-            alert('blur');
+            //alert('blur');
         }
     };
     window.EMR.text = text;
@@ -223,7 +280,6 @@
             this.parentNode.setAttribute('tl-model', JSON.stringify(json));
         }
     }
-
     //获取元素的纵坐标 
     function getTop(e) {
         var offset = e.offsetTop;
@@ -235,6 +291,52 @@
         var offset = e.offsetLeft;
         if (e.offsetParent != null) offset += getLeft(e.offsetParent);
         return offset;
+    }
+    function removeFloatWindow() {
+        document.body.onclick = function () {
+            var sNodes = document.getElementsByClassName('tl-ui-select');
+            if (sNodes != null && sNodes.length > 0) {
+                for (var i = 0, l = sNodes.length; i < l; i++) {
+                    sNodes[0].remove();
+                }
+                document.body.onclick = null;
+            }
+            if (window.frameElement != null) {
+                sNodes =window.parent.window.document.getElementsByClassName('tl-ui-select');
+                if (sNodes != null && sNodes.length > 0) {
+                    for (var i = 0, l = sNodes.length; i < l; i++) {
+                        sNodes[0].remove();
+                    }
+                    window.parent.window.document.body.onclick = null;
+                }
+            }
+        };
+    }
+    function showHistory(t, historyData) {
+        historyData = [{}, {}]
+       
+        console.log('showHistory');
+        if (historyData == undefined || historyData.length <= 0) return;
+        //var width = t.offsetWidth, height = t.offsetHeight, left = getLeft(t), top = getTop(t) + height;
+        var newNode = document.createElement('div');
+        newNode.setAttribute('class', "tl-ui-select");
+        newNode.style.right = 5 + 'px';
+        newNode.style.top = 432 + 'px';
+        newNode.style.overflow = 'hidden';
+        newNode.style.maxHeight = 100 + 'px';
+        newNode.style.minWidth = 50 + 'px';
+        newNode.style.height = 120 + 'px';
+        newNode.style.width = 80 + 'px';
+        newNode.style.display = 'block';
+        newNode.innerHTML = "<div style='text-align:center;border-bottom:1px solid #ccc;'>历史痕迹</div><div style='padding: 5px;font-size: 12px;'>你瞅啥？...</div>";
+
+        if (window.frameElement == null) {//没有在frame 中
+            t.insertBefore(newNode, t.childNodes[t.childNodes.length - 1]);
+        } else {
+            var p = window.parent.window.document.body;
+            p.insertBefore(newNode, p.childNodes[p.childNodes.length - 1]);
+        }
+
     }
     //画出html，绑定事件
     function showHTML(t, data, va) {
@@ -274,15 +376,15 @@
         newNode.innerHTML = html.join('');
         //document.body.insertBefore(newNode, document.body.childNodes[0]);
         t.insertBefore(newNode, t.childNodes[t.childNodes.length-1]);
-        document.body.onclick = function () {
-            var sNodes = document.getElementsByClassName('tl-ui-select');
-            if (sNodes != null && sNodes.length > 0) {
-                for (var i = 0, l = sNodes.length; i < l; i++) {
-                    sNodes[i].remove();
-                }
-                document.body.onclick = null;
-            }
-        };
+        //document.body.onclick = function () {
+        //    var sNodes = document.getElementsByClassName('tl-ui-select');
+        //    if (sNodes != null && sNodes.length > 0) {
+        //        for (var i = 0, l = sNodes.length; i < l; i++) {
+        //            sNodes[i].remove();
+        //        }
+        //        document.body.onclick = null;
+        //    }
+        //};
     }
     //根据json值画出下拉框
     function drowHTML(t, json) {
@@ -343,6 +445,8 @@
             var json = JSON.parse(jsonstr);
             //1.show之后给body绑定一个点击事件，触发后所有的select都【删除】
             drowHTML(t, json);
+            showHistory(t);
+            setTimeout(removeFloatWindow(), 100);
         },tlselectechange:function(t){
             //保存网页
             var value = t.getAttribute('tl-value'), text = t.getAttribute('tl-text');
